@@ -4,19 +4,25 @@ This repository contains small Python scripts and examples for practicing common
 
 ## Repository Structure
 ```bash
-simple-tasks/
+python-simple-tasks/
 ├── README.md
+├── bioinformatics/
+│   ├── files/
+│   ├── adenine_counter.py
+│   ├── calculate_rmsd_numpy.py
+│   ├── find_nearest_value.py
+│   ├── protein_contacts.py
+│   └── sequence_length_calculator.py
 ├── chemistry/
 │   └── peptide_bond_distance.py
-├── bioinformatics/
-│   ├── sequence_length_calculator.py
-│   └── adenine_counter.py
-├── visualization/
-│   ├── 3d_surface_plot.py
-│   ├── string_visualization.py
-│   └── trig_functions_plot.py
-└── utils/
-    └── ip_validator.py
+├── utils/
+│   └── ip_validator.py
+└── visualization/
+    ├── plots/
+    ├── 3d_surface_plot.py
+    ├── barcelona_meteo.py
+    ├── plot_trig_functions.py
+    └── string_visualization.py
 
 ```
 
@@ -33,6 +39,69 @@ simple-tasks/
 **Expected Output:** distance in Ångstroms (~1.23 Å) 
 
 ### bioinformatics/
+- **adenine_counter.py**  
+  Counts the number of adenines (A) in one or more DNA sequences provided as command-line arguments.  
+  Supports **all IUPAC nucleotide codes** (`A, C, G, T, R, Y, S, W, K, M, B, D, H, V, N`).  
+  If a sequence contains invalid characters, it prints an error message instead of counting.  
+
+  **Usage:**  
+```bash
+  python bioinformatics/adenine_counter.py ATGCA NRYTGA
+```
+  **Example Output:** 
+``` python
+  Sequence 'ATGCA' has 2 adenine(s).
+  Sequence 'NRYTGA' has 1 adenine(s).
+```
+
+- **calculate_rmsd_numpy.py**  
+  Calculates the **Root Mean Square Deviation (RMSD)** between two sets of atomic coordinates using **NumPy**.  
+  - Reads atomic coordinates directly from two PDB-like structures embedded in the script.  
+  - Extracts coordinates for each atom and stores them in NumPy arrays.  
+  - Computes RMSD using a fully vectorized approach with NumPy operations.  
+  - Prints the RMSD value as output.  
+  - Useful for **bioinformatics** and **structural biology** exercises involving molecular comparison.
+**Usage:**  
+```bash
+python bioinformatics/calculate_rmsd_numpy.py
+```
+**Example output**:
+```python
+RMSD between the two structures: 0.2538 Å
+```
+
+- **find_nearest_value.py**  
+  Finds the element in a NumPy array that is **closest to a given target value**.  
+  - Uses `np.abs()` and `np.argmin()` to compute differences efficiently.  
+  - Returns both the **index** and **value** of the nearest element.  
+  - Can be used with any numeric array and any target value.  
+**Usage:**  
+```bash
+python bioinformatics/find_nearest_value.py
+```
+**Example Output:**
+```bash
+Index of nearest element: 7
+Nearest element value: 0.79486108
+```
+
+- **protein_contacts.py**  
+  Calculates **atomic contacts** between a receptor and a ligand from two PDB files.  
+  Two atoms are considered in contact if their distance is **≤ 5 Å**.
+  - Reads atomic coordinates from lines starting with `ATOM` in each PDB file.  
+  - Uses `scipy.spatial.distance.cdist()` to compute all pairwise distances between atoms.  
+  - Identifies atoms from both structures that are within 5 Å of each other.  
+  - Reports the number of contacting atoms in the receptor, the ligand, and the total.
+  **Usage:**  
+```bash
+  python bioinformatics/protein_contacts.py
+```
+**Example Output:**
+```bash
+Atoms of A in contact with B: 84
+Atoms of B in contact with A: 63
+Total atoms in contact: 147
+```
 
 - **sequence_length_calculator.py**  
   Calculates the length of one or more DNA sequences provided as command-line arguments.  
@@ -43,21 +112,6 @@ simple-tasks/
   python bioinformatics/sequence_length_calculator.py ATGC NRYTG
  ``` 
 **Example Output:** 4
-
-- **adenine_counter.py**  
-  Counts the number of adenines (A) in one or more DNA sequences provided as command-line arguments.  
-  Supports **all IUPAC nucleotide codes** (`A, C, G, T, R, Y, S, W, K, M, B, D, H, V, N`).  
-  If a sequence contains invalid characters, it prints an error message instead of counting.  
-  **Usage:**  
-```bash
-  python bioinformatics/adenine_counter.py ATGCA NRYTGA
-```
-
-  **Example Output:** 
-``` python
-  Sequence 'ATGCA' has 2 adenine(s).
-  Sequence 'NRYTGA' has 1 adenine(s).
-```
 
 ### visualization/
 
@@ -72,14 +126,12 @@ simple-tasks/
 ```python
 %run visualization/3d_surface_plot.py
 ```
-
 **Usage from the terminal:**
 ```python
 from visualization.3d_surface_plot import plot_3d_surface
 
 plot_3d_surface(output_file="3d_surface_plot.png")
 ```
-
 **Example output:**
 A 3D surface plot of `f(x, y) = cos(x) + 2*sin(y)` over the interval [-π, π] for x and y.
 
@@ -98,7 +150,6 @@ A 3D surface plot of `f(x, y) = cos(x) + 2*sin(y)` over the interval [-π, π] f
 ```bash
 python visualization/barcelona_meteo.py
 ```
-
 **Usage in Jupyter Notebook:**
 ```python
 from visualization.barcelona_meteo import plot_temperature, plot_rain_humidity
